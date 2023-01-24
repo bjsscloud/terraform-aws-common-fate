@@ -9,7 +9,7 @@ module "lambdacron_event_handler" {
   aws_partition  = var.aws_partition
   aws_url_suffix = var.aws_url_suffix
 
-  function_name         = "granted-event-handler"
+  function_name         = "${var.module}-event-handler"
   description           = "${local.csi} Event Handler"
   memory                = 128
   runtime               = "go1.x"
@@ -35,7 +35,7 @@ module "lambdacron_event_handler" {
   handler_function_name = "event-handler"
 
   lambda_env_vars = {
-    APPROVALS_TABLE_NAME = aws_dynamodb_table.main.name
+    COMMONFATE_TABLE_NAME = aws_dynamodb_table.main.name
   }
 
   subscription_arns = var.lambda_dlq_targets

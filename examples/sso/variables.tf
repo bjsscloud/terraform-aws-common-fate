@@ -49,17 +49,17 @@ variable "default_tags" {
 }
 
 ##
-# Granted
+# Common Fate
 ##
 
 variable "public_hosted_zone_id" {
   type        = string
-  description = "AWS Route53 Public Hosted Zone ID. If provided will be used for a custom frontend domain for Granted Approvals"
+  description = "AWS Route53 Public Hosted Zone ID. If provided will be used for a custom frontend domain for Common Fate"
   default     = null
 }
 
 # TODO: Implement strict typing with optional attributes
-#sso_granted = {
+#sso_common_fate = {
 #  enabled                   = true
 #  administrator_group_id    = "string"
 #  azure_client_id           = "string"
@@ -69,12 +69,16 @@ variable "public_hosted_zone_id" {
 #  identity_provider_type    = "string"
 #  saml_sso_metadata_content = "string"
 #}
-variable "sso_granted" {
-  type       = map(any)
-  description = "Configuration for Granted Approvals deployment"
+variable "sso_common_fate" {
+  type        = map(any)
+  description = "Configuration for Common Fate deployment"
 
   default = {
     enabled = false
   }
 }
 
+variable "sso_region" {
+  type        = string
+  description = "The Region that the AWS IAM Identity Center instance is deployed to"
+}

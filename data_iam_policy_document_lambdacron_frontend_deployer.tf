@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "lambdacron_frontend_deployer" {
   }
 
   statement {
-    sid    = "AllowReadGrantedReleaseBucketObjects"
+    sid    = "AllowReadReleaseBucketObjects"
     effect = "Allow"
 
     actions = [
@@ -33,12 +33,12 @@ data "aws_iam_policy_document" "lambdacron_frontend_deployer" {
     ]
 
     resources = [
-      "arn:aws:s3:::granted-releases-us-west-2/*"
+      "arn:aws:s3:::${var.sources_s3_bucket_id}/*"
     ]
   }
 
   statement {
-    sid    = "AllowListGrantedReleaseBucket"
+    sid    = "AllowListReleaseBucket"
     effect = "Allow"
 
     actions = [
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "lambdacron_frontend_deployer" {
     ]
 
     resources = [
-      "arn:aws:s3:::granted-releases-us-west-2",
+      "arn:aws:s3:::${var.sources_s3_bucket_id}",
     ]
   }
 

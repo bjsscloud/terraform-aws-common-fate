@@ -9,7 +9,7 @@ module "lambdacron_frontend_deployer" {
   aws_partition  = var.aws_partition
   aws_url_suffix = var.aws_url_suffix
 
-  function_name         = "granted-frontend-deployer"
+  function_name         = "${var.module}-frontend-deployer"
   description           = "${local.csi} Frontend Deployer"
   memory                = 128
   runtime               = "nodejs16.x"
@@ -28,11 +28,12 @@ module "lambdacron_frontend_deployer" {
   lambda_env_vars = {
     FUNCTION_LIST = jsonencode([
       "access-handler",
-      "approvals",
+      "cache-sync",
+      "commonfate",
       "event-handler",
       "granter",
-      "syncer",
       "slack-notifier",
+      "syncer",
       "webhook",
     ])
   }

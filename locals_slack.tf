@@ -2,7 +2,7 @@ locals {
   slack_app_config = {
     display_information = {
       name             = local.csi
-      description      = "Granted Privileged Identity Management for ${local.csi}"
+      description      = "Common Fate Privileged Identity Management for ${local.csi}"
       background_color = "#26223a"
     }
 
@@ -31,7 +31,7 @@ locals {
     settings = {
       interactivity = {
         is_enabled  = true
-        request_url = "${local.approvals_api_url}webhook/v1/slack/interactivity"
+        request_url = "${local.main_api_url}webhook/v1/slack/interactivity"
       }
 
       org_deploy_enabled     = false

@@ -11,9 +11,9 @@ output "access_handler_rest_api_endpoint" {
 
 # Approvals
 
-output "approvals_rest_api_endpoint" {
+output "main_rest_api_endpoint" {
   description = "Approvals REST API Endpoint URL"
-  value       = local.approvals_api_url
+  value       = local.main_api_url
 }
 
 ##
@@ -128,9 +128,9 @@ output "access_handler_lambda_log_group_name" {
 
 # Approvals
 
-output "approvals_lambda_log_group_name" {
-  description = "Approval Lambda Function Cloudwatch Log Group Name"
-  value       = module.lambdacron_approvals.log_group_name
+output "api_lambda_log_group_name" {
+  description = "API Lambda Function Cloudwatch Log Group Name"
+  value       = module.lambdacron_api.log_group_name
 }
 
 # Event Handler

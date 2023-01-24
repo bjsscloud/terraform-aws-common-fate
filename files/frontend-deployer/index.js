@@ -19,7 +19,8 @@ function getEnv(key) {
  *
  * [
  *   'access-handler',
- *   'approvals',
+ *   'cache-sync',
+ *   'commonfate', #TODO: Will become `api` in future
  *   'event-handler',
  *   'granter',
  *   'syncer',
@@ -211,7 +212,7 @@ const createInvalidation = async (
 }
 
 /**
- * Deploy Granted Function Archives and Frontend Assets
+ * Deploy Common Fate Function Archives and Frontend Assets
  * Finish with a CloudFront Invalidation. Ideally we would
  * only do this if changes are made, but there's so many
  * possible reasons to need an invalidation that we couldn't
@@ -287,17 +288,17 @@ exports.handler = async (event, context, callback) => {
    * unique identifiers, and we are going to deploy them
    * to static filenames per function.
    */
-  const grantedCloudFormationObjectKey = `${version}/Granted.template.json`;
+  const cloudFormationObjectKey = `${version}/Granted.template.json`;
 
   const cfn_json_object = await getAwsResults(
     'S3', 'getObject',
     { region },
     {
       Bucket: sourceS3BucketId,
-      Key: grantedCloudFormationObjectKey,
+      Key: cloudFormationObjectKey,
     },
   ).catch((error) => {
-    console.error(`Error in getObject for s3://${sourceS3BucketId}/${grantedCloudFormationObjectKey}`);
+    console.error(`Error in getObject for s3://${sourceS3BucketId}/${cloudFormationObjectKey}`);
     console.error(JSON.stringify(error, null, 2));
 
     return undefined;

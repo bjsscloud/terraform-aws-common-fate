@@ -46,7 +46,7 @@ variable "aws_url_suffix" {
 variable "module" {
   type        = string
   description = "The variable encapsulating the name of this module"
-  default     = "granted"
+  default     = "common-fate"
 }
 
 variable "default_tags" {
@@ -63,14 +63,14 @@ variable "default_tags" {
 
 variable "sources_s3_bucket_id" {
   type        = string
-  description = "Location for upstream Granted releases"
+  description = "Location for upstream Common Fate releases"
   default     = "granted-releases-us-west-2"
 }
 
 variable "sources_version" {
   type        = string
-  description = "Version of Granted Lambda Functions and Frontend Assets"
-  default     = "v0.6.2"
+  description = "Version of Common Fate Lambda Functions and Frontend Assets"
+  default     = "v0.13.2"
 }
 
 # Custom (non-CloudFront) Domains
@@ -106,6 +106,12 @@ variable "identity_provider_type" {
 variable "idp_sync_schedule" {
   type        = string
   description = "An EventBridge Event Rule Schedule Expression for the IDP Sync Lambda Function"
+  default     = "cron(0/5 * * * ? *)"
+}
+
+variable "cache_sync_schedule" {
+  type        = string
+  description = "An EventBridge Event Rule Schedule Expression for the Cache Sync Lambda Function"
   default     = "cron(0/5 * * * ? *)"
 }
 
@@ -175,6 +181,11 @@ variable "aws_sso_instance_arn" {
   description = "AWS SSO Instance ARN"
 }
 
+variable "aws_sso_region" {
+  type        = string
+  description = "AWS SSO Instance region"
+}
+
 # AWS API Gateway
 
 variable "api_gateway_account_enabled" {
@@ -238,4 +249,10 @@ variable "s3_access_logs_s3_bucket_id" {
   type        = string
   description = "AWS S3 Bucket ID for S3 Server Access Logs"
   default     = null
+}
+
+variable "ssm_parameter_prefix" {
+  type        = string
+  description = "Prefix to use (which will be further prefixed by '/') for AWS Systems Manager Parameter Store Parameters managed by the module"
+  default     = "common-fate"
 }

@@ -1,6 +1,6 @@
 data "aws_iam_policy_document" "aws_access_manage" {
   statement {
-    sid    = "AllowReadGrantedProvidersSecrets"
+    sid    = "AllowReadCommonFateProvidersSecrets"
     effect = "Allow"
 
     actions = [
@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "aws_access_manage" {
 
     resources = [
       format(
-        "arn:%s:ssm:%s:%s:parameter/granted/providers/*",
+        "arn:%s:ssm:%s:%s:parameter/${var.ssm_parameter_prefix}/providers/*",
         var.aws_partition,
         var.region,
         var.aws_account_id,

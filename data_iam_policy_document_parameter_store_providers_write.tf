@@ -8,7 +8,7 @@ data "aws_iam_policy_document" "parameter_store_providers_write" {
     ]
 
     resources = [
-      "arn:${var.aws_partition}:ssm:${var.region}:${var.aws_account_id}:parameter/granted/providers/*",
+      "arn:${var.aws_partition}:ssm:${var.region}:${var.aws_account_id}:parameter/${var.ssm_parameter_prefix}/providers/*",
     ]
   }
 
