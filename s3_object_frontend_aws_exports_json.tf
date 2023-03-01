@@ -6,8 +6,8 @@ resource "aws_s3_object" "frontend_aws_exports_json" {
     API = {
       endpoints = [
         {
-          endpoint = local.approvals_api_url
-          name     = "approvals"
+          endpoint = local.main_api_url
+          name     = "common-fate" # TODO: Will become `api` in future
           region   = var.region
         }
       ]

@@ -1,5 +1,5 @@
 resource "aws_ssm_parameter" "secrets_identity_token" {
-  name   = "/${local.csi}/secrets/identity/token"
+  name   = "/${var.ssm_parameter_prefix}/secrets/identity/token"
   type   = "SecureString"
   value  = var.identity_token_initial_secret_value
   key_id = module.kms_ssm.key_arn

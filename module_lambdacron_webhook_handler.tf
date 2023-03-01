@@ -9,7 +9,7 @@ module "lambdacron_webhook_handler" {
   aws_partition  = var.aws_partition
   aws_url_suffix = var.aws_url_suffix
 
-  function_name         = "granted-webhook-handler"
+  function_name         = "${var.module}-webhook-handler"
   description           = "${local.csi} Webhook Handler"
   memory                = 128
   runtime               = "go1.x"
@@ -17,16 +17,16 @@ module "lambdacron_webhook_handler" {
   log_retention_in_days = var.lambda_function_log_retention_in_days
 
   allowed_triggers = {
-    ApiGatewayApprovalsWebhook = {
-      service        = "apigateway"
+    ApiGatewayMainWebhook = {
+      service = "apigateway"
 
       source_arn = format(
         "arn:%s:execute-api:%s:%s:%s/%s/*/webhook/v1/*",
         var.aws_partition,
         var.region,
         var.aws_account_id,
-        aws_api_gateway_rest_api.approvals.id,
-        aws_api_gateway_stage.approvals_prod.stage_name,
+        aws_api_gateway_rest_api.main.id,
+        aws_api_gateway_stage.main_prod.stage_name,
       )
     }
   }

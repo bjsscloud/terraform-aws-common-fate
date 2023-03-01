@@ -1,10 +1,10 @@
-Granted Approvals
-=================
+Common Fate
+===========
 
-Granted Approvals by CommonFate
+Common Fate by Common Fate
 
-* https://github.com/bjsscloud/terraform-aws-granted-approvals/
-* https://github.com/common-fate/granted-approvals/
+* https://github.com/bjsscloud/terraform-aws-common-fate/
+* https://github.com/common-fate/common-fate/
 * https://commonfate.io/
 
 Example Usage
@@ -13,9 +13,9 @@ Example Usage
 ### tfvars for component (root module)
 
 ```hcl
-sso_granted = {
+sso_common_fate = {
   enabled                = true
-  administrator_group_id = "<Object ID of Azure AD Security Group for Granted Administrators>"
+  administrator_group_id = "<Object ID of Azure AD Security Group for Common Fate Administrators>"
   azure_client_id        = "<IDP Syncer Azure App Registration Client ID>"
   azure_tenant_id        = "<Azure Tenant ID>"
   identity_provider_name = "<Descriptor for the Azure IDP (No spaces)>"
@@ -30,9 +30,9 @@ sso_granted = {
 ### Variables for component (root module)
 
 ```hcl
-variable "sso_granted" {
+variable "sso_common_fate" {
   type        = map(any)
-  description = "Configuration for Granted deployment"
+  description = "Configuration for Common Fate deployment"
 
   default = {
     enabled = false
@@ -40,12 +40,12 @@ variable "sso_granted" {
 }
 ```
 
-### Module call from component (root module), e.g. `components/sso/module_granted.tf`
+### Module call from component (root module), e.g. `components/sso/module_common_fate.tf`
 
 ```hcl
-module "granted" {
-  count  = var.sso_granted["enabled"] ? 1 : 0
-  source = "bjsscloud/granted-approvals/aws"
+module "common_fate" {
+  count  = var.sso_common_fate["enabled"] ? 1 : 0
+  source = "bjsscloud/common-fate/aws"
 
   providers = {
     aws           = aws
@@ -63,18 +63,18 @@ module "granted" {
 
   public_hosted_zone_id = var.public_hosted_zone_id
 
-  administrator_group_id    = lookup(var.sso_granted, "administrator_group_id", "granted_administrators")
-  azure_client_id           = lookup(var.sso_granted, "azure_client_id", "")
-  azure_tenant_id           = lookup(var.sso_granted, "azure_tenant_id", "")
-  azure_email_identifier    = lookup(var.sso_granted, "azure_email_identifier", "mail")
-  identity_provider_name    = lookup(var.sso_granted, "identity_provider_name", null)
-  identity_provider_type    = lookup(var.sso_granted, "identity_provider_type", "cognito")
-  saml_sso_metadata_content = lookup(var.sso_granted, "saml_sso_metadata_content", null)
-  saml_sso_metadata_url     = lookup(var.sso_granted, "saml_sso_metadata_url", null)
-  sources_version           = lookup(var.sso_granted, "sources_version", null)
+  administrator_group_id    = lookup(var.sso_common_fate, "administrator_group_id", "common_fate_administrators")
+  azure_client_id           = lookup(var.sso_common_fate, "azure_client_id", "")
+  azure_tenant_id           = lookup(var.sso_common_fate, "azure_tenant_id", "")
+  azure_email_identifier    = lookup(var.sso_common_fate, "azure_email_identifier", "mail")
+  identity_provider_name    = lookup(var.sso_common_fate, "identity_provider_name", null)
+  identity_provider_type    = lookup(var.sso_common_fate, "identity_provider_type", "cognito")
+  saml_sso_metadata_content = lookup(var.sso_common_fate, "saml_sso_metadata_content", null)
+  saml_sso_metadata_url     = lookup(var.sso_common_fate, "saml_sso_metadata_url", null)
+  sources_version           = lookup(var.sso_common_fate, "sources_version", null)
 
-  cognito_custom_image_file   = lookup(var.sso_granted, "cognito_custom_image_file", null)
-  cognito_custom_image_base64 = lookup(var.sso_granted, "cognito_custom_image_base64", null)
+  cognito_custom_image_file   = lookup(var.sso_common_fate, "cognito_custom_image_file", null)
+  cognito_custom_image_base64 = lookup(var.sso_common_fate, "cognito_custom_image_base64", null)
 
   default_tags = local.default_tags
 }
@@ -91,10 +91,10 @@ Configuration Steps for a complete Azure AD installation
 
 ### 1. Prepare AAD Client Secret for Syncing Users & Groups
 
-Based on documentation here: https://docs.commonfate.io/granted-approvals/providers/azure-ad
+Based on documentation here: https://docs.commonfate.io/common-fate/providers/registry/commonfate/azure-ad/v1/setup
 
   1. https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade
-  2. New Application: `AWS <ENVIRONMENT> Granted Directory Sync`
+  2. New Application: `AWS <ENVIRONMENT> Common Fate Directory Sync`
      * a. Single Tenant (This Organization Directory Only)
      * b. Click Register
   3. API Permissions → Add
@@ -105,32 +105,32 @@ Based on documentation here: https://docs.commonfate.io/granted-approvals/provid
      * b. Click Add Permissions
   4. Click Grant Admin Consent - Or request Consent be granted from AAD Administrators
   5. Certificates and Secrets
-     * a. New Client Secret: " `AWS <ENVIRONMENT> Granted Directory Sync` "
+     * a. New Client Secret: " `AWS <ENVIRONMENT> Common Fate Directory Sync` "
      * b. Retrieve "Value" for later writing to Parameter Store
-  6. Store Application (Client) ID for use in tfvars: `sso_granted["azure_client_id"]`
-  7. Store Tenant ID for use in tfvars: `sso_granted["azure_tenant_id"]`
+  6. Store Application (Client) ID for use in tfvars: `sso_common_fate["azure_client_id"]`
+  7. Store Tenant ID for use in tfvars: `sso_common_fate["azure_tenant_id"]`
 
 ### 2. Prepare AzureAd Enterprise Application
 
-Based on documentation here: https://docs.commonfate.io/granted-approvals/providers/azure-ad
+Based on documentation here: https://docs.commonfate.io/common-fate/providers/registry/commonfate/azure-ad/v1/setup
 
   1. https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade
-  2. Enterprise Applications → New → Create your own: " `AWS <ENVIRONMENT> Granted SSO` "
-  3. Store Application ID for use in tfvars: `sso_granted["saml_sso_metadata_url"] = https://login.microsoftonline.com/<TENANT ID>/federationmetadata/2007-06/federationmetadata.xml?appid=<APPLICATION ID>`
+  2. Enterprise Applications → New → Create your own: " `AWS <ENVIRONMENT> Common Fate SSO` "
+  3. Store Application ID for use in tfvars: `sso_common_fate["saml_sso_metadata_url"] = https://login.microsoftonline.com/<TENANT ID>/federationmetadata/2007-06/federationmetadata.xml?appid=<APPLICATION ID>`
   4. Set Reply URL and temporary Identifier:
      * a. Identifier: `urn:amazon:cognito:sp:eu-west-2_CHANGEME`
-     * b. Reply URL.  Use  "i" if you are not passing a custom domain to Granted. Use "ii" if you are.
-          - i. `https://<PROJECT>-<ENVIRONMENT>-sso-granted-web.auth.<REGION>.amazoncognito.com/saml2/idpresponse`
-          - ii. `https://auth.granted.<ROOT DOMAIN NAME>/saml2/idpresponse`
+     * b. Reply URL.  Use  "i" if you are not passing a custom domain to Common Fate. Use "ii" if you are.
+          - i. `https://<PROJECT>-<ENVIRONMENT>-sso-common-fate-web.auth.<REGION>.amazoncognito.com/saml2/idpresponse`
+          - ii. `https://auth.common-fate.<ROOT DOMAIN NAME>/saml2/idpresponse`
   5. Assign Groups (Create as necessary)
-     * a. Group for Admins: e.g. `EntApp-AWS-<ENVIRONMENT>-Granted-Admins`
+     * a. Group for Admins: e.g. `EntApp-AWS-<ENVIRONMENT>-Common-Fate-Admins`
      * b. Group for User Access: e.g. `Core-AAD-Guests`
-  6. Capture Admin Group Object ID for use in tfvars: `sso_granted["administrator_group_id"]`
+  6. Capture Admin Group Object ID for use in tfvars: `sso_common_fate["administrator_group_id"]`
 
 ### 3. Configure Terraform Environment
 
 ```hcl
-sso_granted = {
+sso_common_fate = {
   enabled                = true
   administrator_group_id = "<VALUE FROM STEP 2.6>"
   azure_client_id        = "<VALUE FROM STEP 1.6>"
@@ -151,7 +151,7 @@ $ ./bin/terraform.sh -p <PROJECT> -g <GROUP> -e <ENVIRONMENT> -c sso -a apply
 
 ### 5. Update SAML Entity ID in AAD
 
-  1. Update the `AWS <ENVIRONMENT> Granted SSO` Enterprise Application SAML Settings. Replace `CHANGEME` in Identitfier (Entity ID) with the value of the terraform output: `web_cognito_user_pool_id`
+  1. Update the `AWS <ENVIRONMENT> Common Fate SSO` Enterprise Application SAML Settings. Replace `CHANGEME` in Identitfier (Entity ID) with the value of the terraform output: `web_cognito_user_pool_id`
 
 ### 6. Configure Slack App
 
@@ -162,6 +162,6 @@ $ ./bin/terraform.sh -p <PROJECT> -g <GROUP> -e <ENVIRONMENT> -c sso -a apply
 ### 7. Write Secrets to Parameter Store
 
 ```bash
-$ aws ssm put-parameter --name '/<PROJECT>-<ENVIRONMENT>-sso-granted/secrets/identity/token' --value '<VALUE FROM STEP 1.5.b>' --type SecureString --overwrite
-$ aws ssm put-parameter --name '/<PROJECT>-<ENVIRONMENT>-sso-granted/secrets/notifications/slack/token' --value '<VALUE FROM STEP 7.3>' --type SecureString --overwrite
+$ aws ssm put-parameter --name '/<SSM Parameter Prefix, i.e. common-fate>/secrets/identity/token' --value '<VALUE FROM STEP 1.5.b>' --type SecureString --overwrite
+$ aws ssm put-parameter --name '/<SSM Parameter Prefix, i.e. common-fate>/secrets/notifications/slack/token' --value '<VALUE FROM STEP 6.3>' --type SecureString --overwrite
 ```
