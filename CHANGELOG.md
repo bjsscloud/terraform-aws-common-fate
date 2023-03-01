@@ -1,3 +1,9 @@
+## 2.0.1 (March 1, 2023)
+
+ * Fix a bug; as is tradition.
+ * locals_sources.tf was missing.
+ * npx webpack had not been run after last change to frontend-deployer
+
 ## 2.0.0 (March 1, 2023)
 
  * Rename of Granted Approvals to Common Fate
