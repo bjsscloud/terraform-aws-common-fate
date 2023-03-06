@@ -1,3 +1,7 @@
+## 2.1.0 (Pre-release)
+
+ * Add support for AWS SSO as the IdP
+
 ## 2.0.1 (March 1, 2023)
 
  * Fix a bug; as is tradition.

@@ -167,6 +167,20 @@ output "slack_notifier_lambda_log_group_name" {
 }
 
 ##
+# SAML
+##
+
+output "saml_parameters" {
+  description = "SAML Parameters"
+
+  value = {
+    "SAML SSO URL (ACS URL)" = "https://${local.web_cognito_user_pool_domain}/saml2/idpresponse"
+    "Audience URI"           = "urn:amazon:cognito:sp:${aws_cognito_user_pool.web.id}"
+    "Dashboard URL"          = "https://${local.frontend_domain}"
+  }
+}
+
+##
 # Slack
 ##
 
