@@ -7,6 +7,15 @@ locals {
     aws_api_gateway_stage.main_prod.stage_name,
   )
 
+  governance_api_url = format(
+    "https://%s.execute-api.%s.%s/%s/",
+    aws_api_gateway_rest_api.governance.id,
+    var.region,
+    var.aws_url_suffix,
+    aws_api_gateway_stage.governance_prod.stage_name,
+  )
+
+
   access_handler_api_url = format(
     "https://%s.execute-api.%s.%s/%s/",
     aws_api_gateway_rest_api.access_handler.id,

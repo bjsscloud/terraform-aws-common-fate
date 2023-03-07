@@ -23,6 +23,7 @@ function getEnv(key) {
  *   'commonfate', #TODO: Will become `api` in future
  *   'event-handler',
  *   'granter',
+ *   'governance',
  *   'syncer',
  *   'slack-notifier',
  *   'webhook',
