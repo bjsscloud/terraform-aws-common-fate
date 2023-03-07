@@ -22,6 +22,7 @@ function getEnv(key) {
  *   'cache-sync',
  *   'commonfate', #TODO: Will become `api` in future
  *   'event-handler',
+ *   'governance',
  *   'granter',
  *   'syncer',
  *   'slack-notifier',
