@@ -94,12 +94,12 @@ variable "slack_token_initial_secret_value" {
 variable "administrator_group_id" {
   type        = string
   description = "If not using Cognito, this must be overridden with a Group ID from your provider to grant administrative access"
-  default     = "granted_administrators"
+  default     = "GrantedAdministrators"
 }
 
 variable "identity_provider_type" {
   type        = string
-  description = "identity provider: [cognito, okta, azure, google]. okta requires SamlSSOMetadataURL to be provided"
+  description = "identity provider: [cognito, okta, azure, google, aws-sso]. okta requires SamlSSOMetadataURL to be provided"
   default     = "cognito"
 }
 
@@ -115,7 +115,7 @@ variable "cache_sync_schedule" {
   default     = "cron(0/5 * * * ? *)"
 }
 
-# Identity Provider (SAML - Azure/Okta)
+# Identity Provider (SAML - Azure/Okta/AWS)
 
 variable "identity_provider_name" {
   type        = string
