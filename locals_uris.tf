@@ -15,7 +15,6 @@ locals {
     aws_api_gateway_stage.governance_prod.stage_name,
   )
 
-
   access_handler_api_url = format(
     "https://%s.execute-api.%s.%s/%s/",
     aws_api_gateway_rest_api.access_handler.id,

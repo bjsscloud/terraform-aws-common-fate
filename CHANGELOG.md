@@ -1,5 +1,6 @@
 ## 2.1.0 (Pre-release)
 
+ * Add the Governance API
  * Add support for AWS SSO as the IdP
 
 ## 2.0.1 (March 1, 2023)

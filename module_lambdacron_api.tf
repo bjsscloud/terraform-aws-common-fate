@@ -49,28 +49,20 @@ module "lambdacron_api" {
 
   lambda_env_vars = {
     COMMONFATE_ACCESS_HANDLER_EXECUTION_ROLE_ARN = module.lambdacron_access_handler.iam_role_arn
-
-    COMMONFATE_ACCESS_HANDLER_URL = format(
-      "https://%s.execute-api.%s.%s/%s/",
-      aws_api_gateway_rest_api.access_handler.id,
-      var.region,
-      var.aws_url_suffix,
-      aws_api_gateway_stage.access_handler_prod.stage_name,
-    )
-
-    COMMONFATE_ADMIN_GROUP            = var.administrator_group_id
-    COMMONFATE_COGNITO_USER_POOL_ID   = aws_cognito_user_pool.web.id
-    COMMONFATE_FRONTEND_URL           = "https://${local.frontend_domain}"
-    COMMONFATE_TABLE_NAME             = aws_dynamodb_table.main.name
-    COMMONFATE_DEPLOYMENT_SUFFIX      = local.csi
-    COMMONFATE_EVENT_BUS_ARN          = aws_cloudwatch_event_bus.main.arn
-    COMMONFATE_EVENT_BUS_SOURCE       = var.event_bus_source_key
-    COMMONFATE_IDENTITY_PROVIDER      = var.identity_provider_type
-    COMMONFATE_IDENTITY_SETTINGS      = local.identity_configuration
-    COMMONFATE_MOCK_ACCESS_HANDLER    = false
-    COMMONFATE_NOTIFICATIONS_SETTINGS = local.notifications_configuration
-    COMMONFATE_PAGINATION_KMS_KEY_ARN = module.kms_api_pagination.key_arn
-    COMMONFATE_PROVIDER_CONFIG        = local.common_fate_provider_configuration
+    COMMONFATE_ACCESS_HANDLER_URL                = local.access_handler_api_url
+    COMMONFATE_ADMIN_GROUP                       = var.administrator_group_id
+    COMMONFATE_COGNITO_USER_POOL_ID              = aws_cognito_user_pool.web.id
+    COMMONFATE_FRONTEND_URL                      = "https://${local.frontend_domain}"
+    COMMONFATE_TABLE_NAME                        = aws_dynamodb_table.main.name
+    COMMONFATE_DEPLOYMENT_SUFFIX                 = local.csi
+    COMMONFATE_EVENT_BUS_ARN                     = aws_cloudwatch_event_bus.main.arn
+    COMMONFATE_EVENT_BUS_SOURCE                  = var.event_bus_source_key
+    COMMONFATE_IDENTITY_PROVIDER                 = var.identity_provider_type
+    COMMONFATE_IDENTITY_SETTINGS                 = local.identity_configuration
+    COMMONFATE_MOCK_ACCESS_HANDLER               = false
+    COMMONFATE_NOTIFICATIONS_SETTINGS            = local.notifications_configuration
+    COMMONFATE_PAGINATION_KMS_KEY_ARN            = module.kms_api_pagination.key_arn
+    COMMONFATE_PROVIDER_CONFIG                   = local.common_fate_provider_configuration
   }
 
   subscription_arns = var.lambda_dlq_targets

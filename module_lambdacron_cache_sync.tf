@@ -31,15 +31,8 @@ module "lambdacron_cache_sync" {
   handler_function_name = "cache-sync"
 
   lambda_env_vars = {
-    COMMONFATE_ACCESS_HANDLER_URL = format(
-      "https://%s.execute-api.%s.%s/%s/",
-      aws_api_gateway_rest_api.access_handler.id,
-      var.region,
-      var.aws_url_suffix,
-      aws_api_gateway_stage.access_handler_prod.stage_name,
-    )
-
-    COMMONFATE_TABLE_NAME = aws_dynamodb_table.main.name
+    COMMONFATE_ACCESS_HANDLER_URL = local.access_handler_api_url
+    COMMONFATE_TABLE_NAME         = aws_dynamodb_table.main.name
   }
 
   subscription_arns = var.lambda_dlq_targets
