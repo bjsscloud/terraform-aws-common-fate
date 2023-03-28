@@ -42,15 +42,7 @@ resource "aws_lambda_function" "main" {
         null
   )
 
-  dynamic "dead_letter_config" {
-    for_each = var.enable_dlq != true ? toset([]) : toset([1])
-
-    content {
-      target_arn = aws_sns_topic.main[0].arn
-    }
-  }
-
-  layers = local.lambda_layers
+  layers = local.layers
 
   tracing_config {
     mode = var.xray_mode

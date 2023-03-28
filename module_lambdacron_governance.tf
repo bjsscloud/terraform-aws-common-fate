@@ -50,9 +50,11 @@ module "lambdacron_governance" {
     COMMONFATE_PAGINATION_KMS_KEY_ARN = module.kms_api_pagination.key_arn
   }
 
+  sns_logs = var.sns_logs
+
   subscription_arns = var.lambda_dlq_targets
 
-  use_lambda_insights = true
+  insights_enable = true
 
   default_tags = local.default_tags
 }

@@ -1,5 +1,5 @@
 module "common_fate" {
-  count  = var.sso_common_fate["enabled"] ? 1 : 0
+  count  = var.common_fate["enabled"] ? 1 : 0
   source = "../../"
 
   providers = {
@@ -19,18 +19,18 @@ module "common_fate" {
 
   public_hosted_zone_id = var.public_hosted_zone_id
 
-  administrator_group_id    = lookup(var.sso_common_fate, "administrator_group_id", "common_fate_administrators")
-  azure_client_id           = lookup(var.sso_common_fate, "azure_client_id", "")
-  azure_tenant_id           = lookup(var.sso_common_fate, "azure_tenant_id", "")
-  azure_email_identifier    = lookup(var.sso_common_fate, "azure_email_identifier", "mail")
-  identity_provider_name    = lookup(var.sso_common_fate, "identity_provider_name", null)
-  identity_provider_type    = lookup(var.sso_common_fate, "identity_provider_type", "cognito")
-  saml_sso_metadata_content = lookup(var.sso_common_fate, "saml_sso_metadata_content", null)
-  saml_sso_metadata_url     = lookup(var.sso_common_fate, "saml_sso_metadata_url", null)
-  sources_version           = lookup(var.sso_common_fate, "sources_version", null)
+  administrator_group_id    = lookup(var.common_fate, "administrator_group_id", "common_fate_administrators")
+  azure_client_id           = lookup(var.common_fate, "azure_client_id", "")
+  azure_tenant_id           = lookup(var.common_fate, "azure_tenant_id", "")
+  azure_email_identifier    = lookup(var.common_fate, "azure_email_identifier", "mail")
+  identity_provider_name    = lookup(var.common_fate, "identity_provider_name", null)
+  identity_provider_type    = lookup(var.common_fate, "identity_provider_type", "cognito")
+  saml_sso_metadata_content = lookup(var.common_fate, "saml_sso_metadata_content", null)
+  saml_sso_metadata_url     = lookup(var.common_fate, "saml_sso_metadata_url", null)
+  sources_version           = lookup(var.common_fate, "sources_version", null)
 
-  web_cognito_custom_image_file   = lookup(var.sso_common_fate, "cognito_custom_image_file", null)
-  web_cognito_custom_image_base64 = lookup(var.sso_common_fate, "cognito_custom_image_base64", null)
+  web_cognito_custom_image_file   = lookup(var.common_fate, "cognito_custom_image_file", null)
+  web_cognito_custom_image_base64 = lookup(var.common_fate, "cognito_custom_image_base64", null)
 
   default_tags = local.default_tags
 }

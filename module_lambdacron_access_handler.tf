@@ -51,9 +51,11 @@ module "lambdacron_access_handler" {
     COMMONFATE_STATE_MACHINE_ARN      = aws_sfn_state_machine.access_handler.arn,
   }
 
+  sns_logs = var.sns_logs
+
   subscription_arns = var.lambda_dlq_targets
 
-  use_lambda_insights = true
+  insights_enable = true
 
   default_tags = local.default_tags
 }

@@ -38,9 +38,11 @@ module "lambdacron_event_handler" {
     COMMONFATE_TABLE_NAME = aws_dynamodb_table.main.name
   }
 
+  sns_logs = var.sns_logs
+
   subscription_arns = var.lambda_dlq_targets
 
-  use_lambda_insights = true
+  insights_enable = true
 
   default_tags = local.default_tags
 }

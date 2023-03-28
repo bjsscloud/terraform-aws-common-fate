@@ -11,6 +11,10 @@ terraform {
         aws.us-east-1,
       ]
     }
+
+    commonfate = {
+      source = "common-fate/commonfate"
+    }
   }
 
   required_version = ">= 1.1.0"

@@ -13,7 +13,7 @@ Example Usage
 ### tfvars for component (root module)
 
 ```hcl
-sso_common_fate = {
+common_fate = {
   enabled                = true
   administrator_group_id = "<Object ID of Azure AD Security Group for Common Fate Administrators>"
   azure_client_id        = "<IDP Syncer Azure App Registration Client ID>"
@@ -30,7 +30,7 @@ sso_common_fate = {
 ### Variables for component (root module)
 
 ```hcl
-variable "sso_common_fate" {
+variable "common_fate" {
   type        = map(any)
   description = "Configuration for Common Fate deployment"
 
@@ -44,7 +44,7 @@ variable "sso_common_fate" {
 
 ```hcl
 module "common_fate" {
-  count  = var.sso_common_fate["enabled"] ? 1 : 0
+  count  = var.common_fate["enabled"] ? 1 : 0
   source = "bjsscloud/common-fate/aws"
 
   providers = {
@@ -63,18 +63,18 @@ module "common_fate" {
 
   public_hosted_zone_id = var.public_hosted_zone_id
 
-  administrator_group_id    = lookup(var.sso_common_fate, "administrator_group_id", "common_fate_administrators")
-  azure_client_id           = lookup(var.sso_common_fate, "azure_client_id", "")
-  azure_tenant_id           = lookup(var.sso_common_fate, "azure_tenant_id", "")
-  azure_email_identifier    = lookup(var.sso_common_fate, "azure_email_identifier", "mail")
-  identity_provider_name    = lookup(var.sso_common_fate, "identity_provider_name", null)
-  identity_provider_type    = lookup(var.sso_common_fate, "identity_provider_type", "cognito")
-  saml_sso_metadata_content = lookup(var.sso_common_fate, "saml_sso_metadata_content", null)
-  saml_sso_metadata_url     = lookup(var.sso_common_fate, "saml_sso_metadata_url", null)
-  sources_version           = lookup(var.sso_common_fate, "sources_version", null)
+  administrator_group_id    = lookup(var.common_fate, "administrator_group_id", "common_fate_administrators")
+  azure_client_id           = lookup(var.common_fate, "azure_client_id", "")
+  azure_tenant_id           = lookup(var.common_fate, "azure_tenant_id", "")
+  azure_email_identifier    = lookup(var.common_fate, "azure_email_identifier", "mail")
+  identity_provider_name    = lookup(var.common_fate, "identity_provider_name", null)
+  identity_provider_type    = lookup(var.common_fate, "identity_provider_type", "cognito")
+  saml_sso_metadata_content = lookup(var.common_fate, "saml_sso_metadata_content", null)
+  saml_sso_metadata_url     = lookup(var.common_fate, "saml_sso_metadata_url", null)
+  sources_version           = lookup(var.common_fate, "sources_version", null)
 
-  cognito_custom_image_file   = lookup(var.sso_common_fate, "cognito_custom_image_file", null)
-  cognito_custom_image_base64 = lookup(var.sso_common_fate, "cognito_custom_image_base64", null)
+  cognito_custom_image_file   = lookup(var.common_fate, "cognito_custom_image_file", null)
+  cognito_custom_image_base64 = lookup(var.common_fate, "cognito_custom_image_base64", null)
 
   default_tags = local.default_tags
 }
@@ -107,8 +107,8 @@ Based on documentation here: https://docs.commonfate.io/common-fate/providers/re
   5. Certificates and Secrets
      * a. New Client Secret: " `AWS <ENVIRONMENT> Common Fate Directory Sync` "
      * b. Retrieve "Value" for later writing to Parameter Store
-  6. Store Application (Client) ID for use in tfvars: `sso_common_fate["azure_client_id"]`
-  7. Store Tenant ID for use in tfvars: `sso_common_fate["azure_tenant_id"]`
+  6. Store Application (Client) ID for use in tfvars: `common_fate["azure_client_id"]`
+  7. Store Tenant ID for use in tfvars: `common_fate["azure_tenant_id"]`
 
 ### 2. Prepare AzureAd Enterprise Application
 
@@ -116,7 +116,7 @@ Based on documentation here: https://docs.commonfate.io/common-fate/providers/re
 
   1. https://portal.azure.com/#blade/Microsoft_AAD_IAM/StartboardApplicationsMenuBlade
   2. Enterprise Applications → New → Create your own: " `AWS <ENVIRONMENT> Common Fate SSO` "
-  3. Store Application ID for use in tfvars: `sso_common_fate["saml_sso_metadata_url"] = https://login.microsoftonline.com/<TENANT ID>/federationmetadata/2007-06/federationmetadata.xml?appid=<APPLICATION ID>`
+  3. Store Application ID for use in tfvars: `common_fate["saml_sso_metadata_url"] = https://login.microsoftonline.com/<TENANT ID>/federationmetadata/2007-06/federationmetadata.xml?appid=<APPLICATION ID>`
   4. Set Reply URL and temporary Identifier:
      * a. Identifier: `urn:amazon:cognito:sp:eu-west-2_CHANGEME`
      * b. Reply URL.  Use  "i" if you are not passing a custom domain to Common Fate. Use "ii" if you are.
@@ -125,12 +125,12 @@ Based on documentation here: https://docs.commonfate.io/common-fate/providers/re
   5. Assign Groups (Create as necessary)
      * a. Group for Admins: e.g. `EntApp-AWS-<ENVIRONMENT>-Common-Fate-Admins`
      * b. Group for User Access: e.g. `Core-AAD-Guests`
-  6. Capture Admin Group Object ID for use in tfvars: `sso_common_fate["administrator_group_id"]`
+  6. Capture Admin Group Object ID for use in tfvars: `common_fate["administrator_group_id"]`
 
 ### 3. Configure Terraform Environment
 
 ```hcl
-sso_common_fate = {
+common_fate = {
   enabled                = true
   administrator_group_id = "<VALUE FROM STEP 2.6>"
   azure_client_id        = "<VALUE FROM STEP 1.6>"

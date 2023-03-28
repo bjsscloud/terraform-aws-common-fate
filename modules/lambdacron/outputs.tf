@@ -22,8 +22,16 @@ output "iam_role_arn" {
   value = aws_iam_role.main.arn
 }
 
+output "iam_role_policy_attachment_lambda_core" {
+  value = aws_iam_role_policy_attachment.lambda_core
+}
+
+output "iam_role_policy_attachment_lambda_custom" {
+  value = length(var.iam_policy_documents) == 0 ? null : aws_iam_role_policy_attachment.lambda_custom[0]
+}
+
 output "sns_topic_arn" {
-  value = var.enable_dlq ? aws_sns_topic.main[0].arn : null
+  value = local.notifications_enable ? module.sns[0].topic["arn"] : null
 }
 
 output "log_group_name" {

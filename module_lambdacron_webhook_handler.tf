@@ -43,9 +43,11 @@ module "lambdacron_webhook_handler" {
 
   lambda_env_vars = {}
 
+  sns_logs = var.sns_logs
+
   subscription_arns = var.lambda_dlq_targets
 
-  use_lambda_insights = true
+  insights_enable = true
 
   default_tags = local.default_tags
 }

@@ -211,10 +211,39 @@ variable "xray_mode" {
   default     = "PassThrough"
 }
 
-variable "enable_dlq" {
+variable "on_failure_sns_destination_enable" {
   type        = bool
-  description = "Pass false to disable creation of the DLQ"
+  description = "Whether to configure an on_failure destination for the Lambda, pointing to SNS (for aysnc invocations)"
   default     = true
+}
+
+variable "cw_errors_notification" {
+  type = object({
+    enable             = bool
+    evaluation_periods = optional(number, 1)
+    period             = optional(number, 120)
+    statistic          = optional(string, "Maximum")
+    threshold          = optional(number, 0)
+  })
+
+  description = "CloudWatch errors metric alarm config - when enabled creates CloudWatch alarm, notifying on Lambda 'Errors' metric (for sync invocations; for async use on_failure_sns_destination_enable)"
+
+  default = {
+    enable = false
+  }
+}
+
+variable "sns_logs" {
+  type = object({
+    iam_role_arn        = string
+    success_sample_rate = optional(number)
+  })
+
+  description = "The ARN of the IAM Role and Sample Rate to use for delivery feedback logging when creating an AWS SNS Topic"
+
+  default = {
+    iam_role_arn = null
+  }
 }
 
 variable "subscription_arns" {
@@ -225,16 +254,22 @@ variable "subscription_arns" {
 
 # NOTE: There is a limit of 5 layers. If you enable the lambda insights that limit
 #       goes down to 4 since lamba insights adds a layer.
-variable "lambda_layers" {
+variable "layers" {
   type        = list(string)
   description = "Additional lambda layers to include"
   default     = []
 }
 
-variable "use_lambda_insights" {
+variable "insights_enable" {
   type        = bool
   description = "Enable lambda insights layer"
   default     = false
+}
+
+variable "reserved_concurrent_executions" {
+  type        = number
+  description = "Number of executions to limit Lambda to"
+  default     = -1
 }
 
 # This is for the very edge case where the lambda needs a specific name which does not

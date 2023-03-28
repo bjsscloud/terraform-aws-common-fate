@@ -1,5 +1,3 @@
-# For now it's not worth encrypting these public assets
-# given the Lambda@Edge and KMS Overheads when acting as a CloudFront origin
 module "kms_s3_frontend" {
   source = "./modules/kms"
 
@@ -13,7 +11,12 @@ module "kms_s3_frontend" {
 
   alias           = "alias/s3/${local.csi}-frontend"
   deletion_window = "30"
-  name            = "${var.module}-s3-frontend"
+
+  key_policy_documents = [
+    data.aws_iam_policy_document.cloudfront_frontend_kms_key_use.json,
+  ]
+
+  name = "${var.module}-s3-frontend"
 
   default_tags = local.default_tags
 }

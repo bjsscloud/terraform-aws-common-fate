@@ -59,7 +59,7 @@ variable "public_hosted_zone_id" {
 }
 
 # TODO: Implement strict typing with optional attributes
-#sso_common_fate = {
+#common_fate = {
 #  enabled                   = true
 #  administrator_group_id    = "string"
 #  azure_client_id           = "string"
@@ -69,7 +69,7 @@ variable "public_hosted_zone_id" {
 #  identity_provider_type    = "string"
 #  saml_sso_metadata_content = "string"
 #}
-variable "sso_common_fate" {
+variable "common_fate" {
   type        = map(any)
   description = "Configuration for Common Fate deployment"
 

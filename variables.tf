@@ -238,12 +238,33 @@ variable "web_cognito_custom_image_file" {
   default     = null
 }
 
+# SNS
+
+variable "sns_logs" {
+  type = object({
+    iam_role_arn        = string
+    success_sample_rate = optional(number)
+  })
+
+  description = "The ARN of the IAM Role and Sample Rate to use for delivery feedback logging when creating an AWS SNS Topic"
+
+  default = {
+    iam_role_arn = null
+  }
+}
+
 # Operational Constants
 
 variable "event_bus_source_key" {
   type        = string
   description = "Unique key for event bus events related to this service"
   default     = "commonfate.io/granted"
+}
+
+variable "frontend_cloudfront_cache_policy" {
+  type        = string
+  description = "AWS-Managed Cache Policy Name to apply to the frontend CloudFront Distribution"
+  default     = "Managed-CachingOptimizedForUncompressedObjects"
 }
 
 variable "lambda_dlq_targets" {
@@ -255,7 +276,7 @@ variable "lambda_dlq_targets" {
 variable "lambda_function_log_retention_in_days" {
   type        = number
   description = "Number of days to retain Lambda Function logs in Cloudwatch"
-  default     = 90
+  default     = 365
 }
 
 variable "s3_access_logs_s3_bucket_id" {
@@ -268,4 +289,16 @@ variable "ssm_parameter_prefix" {
   type        = string
   description = "Prefix to use (which will be further prefixed by '/') for AWS Systems Manager Parameter Store Parameters managed by the module"
   default     = "common-fate"
+}
+
+variable "waf" {
+  type = object({
+    enabled = bool
+  })
+
+  description = "AWS WAFv2 Configuration"
+
+  default = {
+    enabled = true
+  }
 }

@@ -20,6 +20,7 @@ module "lambdacron_cache_sync" {
     data.aws_iam_policy_document.cognito_user_pool_web_manage.json,
     data.aws_iam_policy_document.dynamodb_table_use.json,
     data.aws_iam_policy_document.parameter_store_secrets_identity_read.json,
+    data.aws_iam_policy_document.rest_api_access_handler_invoke.json,
   ]
 
   schedule = var.cache_sync_schedule
@@ -35,9 +36,11 @@ module "lambdacron_cache_sync" {
     COMMONFATE_TABLE_NAME         = aws_dynamodb_table.main.name
   }
 
+  sns_logs = var.sns_logs
+
   subscription_arns = var.lambda_dlq_targets
 
-  use_lambda_insights = true
+  insights_enable = true
 
   default_tags = local.default_tags
 }

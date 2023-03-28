@@ -2,21 +2,6 @@ resource "aws_cloudfront_distribution" "frontend" {
   enabled = "true"
   comment = "${local.csi}-frontend"
 
-  # US and EU
-  price_class         = "PriceClass_100"
-  is_ipv6_enabled     = "false"
-  default_root_object = "/index.html"
-
-  origin {
-    origin_id   = "${local.csi}-frontend"
-    origin_path = "/${local.frontend_assets_key_prefix}"
-    domain_name = module.s3bucket_frontend.bucket_regional_domain_name
-
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.frontend.cloudfront_access_identity_path
-    }
-  }
-
   aliases = var.public_hosted_zone_id == null ? [] : [ local.frontend_domain_custom_value ]
 
   custom_error_response {
@@ -39,7 +24,7 @@ resource "aws_cloudfront_distribution" "frontend" {
       "HEAD",
     ]
 
-    cache_policy_id = "b2884449-e4de-46a7-ac36-70bc7f1ddd6d" # TODO: data Source for CachingOptimizedForUncompressedObjects
+    cache_policy_id = data.aws_cloudfront_cache_policy.frontend.id
 
     cached_methods = [
       "GET",
@@ -57,11 +42,23 @@ resource "aws_cloudfront_distribution" "frontend" {
     #max_ttl                = "3600"
   }
 
-  http_version = "http1.1"
+  default_root_object = "/index.html"
+  http_version        = "http2and3"
+  is_ipv6_enabled     = true
 
   logging_config {
-    bucket = module.s3bucket_cloudfront_logs.bucket_regional_domain_name
+    bucket          = module.s3bucket_cloudfront_logs.bucket_regional_domain_name
+    include_cookies = true
   }
+
+  origin {
+    domain_name              = module.s3bucket_frontend.bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.frontend.id
+    origin_id                = "${local.csi}-frontend"
+    origin_path              = "/${local.frontend_assets_key_prefix}"
+  }
+
+  price_class = "PriceClass_100"
 
   restrictions {
     geo_restriction {
@@ -87,7 +84,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     }
   }
 
-  #web_acl_id = aws_waf_web_acl.whitelist.id
+  web_acl_id = var.waf["enabled"] ? aws_wafv2_web_acl.cloudfront[0].arn : null
 
   tags = merge(
     local.default_tags,

@@ -2,7 +2,7 @@
 resource "aws_sns_topic_subscription" "dlq_subscriptions" {
   count = length(var.subscription_arns)
 
-  topic_arn = var.enable_dlq ? aws_sns_topic.main[0].arn : null
+  topic_arn = local.notifications_enable ? module.sns[0].topic["arn"] : null
   protocol  = var.subscription_arns[count.index]["protocol"]
   endpoint  = var.subscription_arns[count.index]["endpoint"]
 

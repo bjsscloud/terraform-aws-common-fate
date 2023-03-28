@@ -23,6 +23,11 @@ output "governance_rest_api_endpoint" {
   value       = local.governance_api_url
 }
 
+output "governance_rest_api_execution_arn" {
+  description = "Execution ARN of the Governance REST API"
+  value       = aws_api_gateway_rest_api.governance.execution_arn
+}
+
 ##
 # API Pagination
 ##

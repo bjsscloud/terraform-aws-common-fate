@@ -7,7 +7,7 @@ resource "aws_cognito_user_pool_ui_customization" "web_saml" {
 
   image_file = (
     var.web_cognito_custom_image_file != null && var.web_cognito_custom_image_base64 == null ?
-      filebase64(var.web_cognito_custom_image_file) : 
+      filebase64(var.web_cognito_custom_image_file) :
       var.web_cognito_custom_image_file == null && var.web_cognito_custom_image_base64 != null ?
         var.web_cognito_custom_image_base64 :
         null

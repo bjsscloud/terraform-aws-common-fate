@@ -1,6 +1,6 @@
 data "aws_iam_policy_document" "s3_frontend" {
   statement {
-    sid    = "AllowCloudfrontOaiGetObject"
+    sid    = "AllowCloudfrontOacGetObject"
     effect = "Allow"
 
     actions = [
@@ -12,10 +12,19 @@ data "aws_iam_policy_document" "s3_frontend" {
     ]
 
     principals {
-      type = "AWS"
+      type = "Service"
 
       identifiers = [
-        aws_cloudfront_origin_access_identity.frontend.iam_arn,
+        "cloudfront.${var.aws_url_suffix}",
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+
+      values = [
+        aws_cloudfront_distribution.frontend.arn,
       ]
     }
   }

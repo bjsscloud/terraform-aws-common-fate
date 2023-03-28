@@ -37,9 +37,11 @@ module "lambdacron_idp_sync" {
     COMMONFATE_IDENTITY_SETTINGS    = local.identity_configuration
   }
 
+  sns_logs = var.sns_logs
+
   subscription_arns = var.lambda_dlq_targets
 
-  use_lambda_insights = true
+  insights_enable = true
 
   default_tags = local.default_tags
 }

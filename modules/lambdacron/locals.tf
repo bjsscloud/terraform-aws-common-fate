@@ -1,57 +1,4 @@
 locals {
-  # Compound Scope Identifier
-  csi = replace(
-    format(
-      "%s-%s-%s-%s-%s",
-      var.project,
-      var.environment,
-      var.component,
-      var.module,
-      var.function_name,
-    ),
-    "_",
-    "",
-  )
-
-  # CSI for use in resources with an account namespace, eg IAM roles
-  csi_account = replace(
-    format(
-      "%s-%s-%s-%s-%s-%s",
-      var.project,
-      var.region,
-      var.environment,
-      var.component,
-      var.module,
-      var.function_name,
-    ),
-    "_",
-    "",
-  )
-
-  # CSI for use in resources with a unique namespace, i.e. S3 Buckets
-  csi_global = replace(
-    format(
-      "%s-%s-%s-%s-%s-%s-%s",
-      var.project,
-      var.aws_account_id,
-      var.region,
-      var.environment,
-      var.component,
-      var.module,
-      var.function_name,
-    ),
-    "_",
-    "",
-  )
-
-  default_tags = merge(
-    var.default_tags,
-    {
-      Module = var.module
-      Name   = local.csi
-    },
-  )
-
   archive_path = "${path.root}/work/${local.csi_global}/function.zip"
 
   # Annoyingly the "aws_lambda_layer_version" data source doesn't return
@@ -86,12 +33,14 @@ locals {
     }
   }
 
-  lambda_insights_layer = var.use_lambda_insights ? [
+  lambda_insights_layer = var.insights_enable ? [
     local.lambda_insight_layer_arns["x86-64"]["1.0.143.0"][var.region],
   ] : []
 
-  lambda_layers = concat(
+  layers = concat(
     local.lambda_insights_layer,
-    var.lambda_layers
+    var.layers
   )
+
+  notifications_enable = anytrue([ var.on_failure_sns_destination_enable, var.cw_errors_notification.enable ])
 }

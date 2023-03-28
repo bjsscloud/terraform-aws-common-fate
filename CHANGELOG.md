@@ -1,3 +1,14 @@
+## 3.0.0 (July 17, 2023)
+
+ * `s/var\.sso_common_fate/var.common_fate/g`
+ * Upgraded lambdacron module
+ * New SNS module that permits feedback logging
+ * Update all log retentions to a year for NIST compliance
+ * Make the frontend cache policy a data-sourced variable
+ * Convert CloudFront OAI to OAC & Encrypt the Frontend S3 Bucket
+ * Enable real-time Metrics for the Frontend CloudFront Distribution
+ * Enable support for Slack Webhooks
+
 ## 2.1.0 (March 7, 2023)
 
  * Add the Governance API

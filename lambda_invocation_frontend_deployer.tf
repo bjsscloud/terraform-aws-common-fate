@@ -21,5 +21,6 @@ resource "aws_lambda_invocation" "frontend_deployer" {
 
   depends_on = [
     module.lambdacron_frontend_deployer, # Depend on the whole module, not just the function
+    aws_iam_role_policy_attachment.lambdacron_frontend_deployer_kms_s3_frontend_user,
   ]
 }
