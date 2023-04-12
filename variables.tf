@@ -89,6 +89,14 @@ variable "slack_token_initial_secret_value" {
   default     = "CHANGEME"
 }
 
+variable "slack_incoming_webhook_urls" {
+  type        = map(string)
+  description = "Slack incoming webhook URLs"
+  default     = {}
+  sensitive   = true
+}
+
+
 # Identity Provider (General)
 
 variable "administrator_group_id" {
