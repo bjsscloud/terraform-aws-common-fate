@@ -165,3 +165,16 @@ $ ./bin/terraform.sh -p <PROJECT> -g <GROUP> -e <ENVIRONMENT> -c sso -a apply
 $ aws ssm put-parameter --name '/<SSM Parameter Prefix, i.e. common-fate>/secrets/identity/token' --value '<VALUE FROM STEP 1.5.b>' --type SecureString --overwrite
 $ aws ssm put-parameter --name '/<SSM Parameter Prefix, i.e. common-fate>/secrets/notifications/slack/token' --value '<VALUE FROM STEP 6.3>' --type SecureString --overwrite
 ```
+
+Using Slack incoming webhooks
+=============================
+
+[See the Common Fate documentation here](https://docs.commonfate.io/common-fate/configuration/slack#setup-instructions---slack-webhooks). Add the following variable to your module configuration:
+
+```hcl
+slack_incoming_webhook_urls = {
+    channel_name = "https://hooks.slack.com/services/WEBHOOK_SUFFIX"
+}
+```
+
+Where `channel_name` is the identifier for your channel.
