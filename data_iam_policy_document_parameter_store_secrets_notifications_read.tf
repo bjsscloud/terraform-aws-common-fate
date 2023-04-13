@@ -8,9 +8,10 @@ data "aws_iam_policy_document" "parameter_store_secrets_notifications_read" {
       "ssm:GetParameters",
     ]
 
-    resources = [
+    resources = flatten([
       aws_ssm_parameter.secrets_notifications_slack_token.arn,
-    ]
+      values(aws_ssm_parameter.secrets_notifications_slack_webhook_urls)[*].arn
+    ])
   }
 
   statement {
