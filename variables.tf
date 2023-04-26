@@ -90,10 +90,15 @@ variable "slack_token_initial_secret_value" {
 }
 
 variable "slack_incoming_webhook_urls" {
-  type        = map(string)
+  type        = set(string)
   description = "Slack incoming webhook URLs"
-  default     = {}
-  sensitive   = true
+  default     = []
+}
+
+variable "slack_webhook_initial_secret_value" {
+  type        = string
+  description = "Initial Value for the SSM Parameter Store Parameter storing a Slack Webhook URL secret"
+  default     = "CHANGEME"
 }
 
 
