@@ -89,6 +89,19 @@ variable "slack_token_initial_secret_value" {
   default     = "CHANGEME"
 }
 
+variable "slack_incoming_webhook_urls" {
+  type        = set(string)
+  description = "Slack incoming webhook URLs"
+  default     = []
+}
+
+variable "slack_webhook_initial_secret_value" {
+  type        = string
+  description = "Initial Value for the SSM Parameter Store Parameter storing a Slack Webhook URL secret"
+  default     = "CHANGEME"
+}
+
+
 # Identity Provider (General)
 
 variable "administrator_group_id" {

@@ -165,3 +165,34 @@ $ ./bin/terraform.sh -p <PROJECT> -g <GROUP> -e <ENVIRONMENT> -c sso -a apply
 $ aws ssm put-parameter --name '/<SSM Parameter Prefix, i.e. common-fate>/secrets/identity/token' --value '<VALUE FROM STEP 1.5.b>' --type SecureString --overwrite
 $ aws ssm put-parameter --name '/<SSM Parameter Prefix, i.e. common-fate>/secrets/notifications/slack/token' --value '<VALUE FROM STEP 6.3>' --type SecureString --overwrite
 ```
+
+Using Slack incoming webhooks
+=============================
+
+[See the Common Fate documentation here](https://docs.commonfate.io/common-fate/configuration/slack#setup-instructions---slack-webhooks). Add the following variable to your module configuration:
+
+```hcl
+slack_incoming_webhook_urls = ["channel_name"]
+```
+
+Where `channel_name` is the identifier for your channel, like "common-fate-requests".
+
+The Terraform module will create an SSM parameter as follows:
+
+```
+/<SSM Parameter Prefix, i.e. common-fate>/secrets/notifications/slackIncomingWebhooks/<channel name>/webhookUrl
+```
+
+In the above example if `common-fate-requests` is used as the channel identifier, the SSM parameter would be something like:
+
+```
+/common-fate/secrets/notifications/slackIncomingWebhooks/common-fate-requests/webhookUrl
+```
+
+The SSM Parameter prefix is `common-fate` by default, but can be overridden by providing the `ssm_parameter_prefix` module variable.
+
+You will need to set the SSM parameter with the actual webhook value. You can do this as follows:
+
+```
+aws ssm put-parameter --name /common-fate/secrets/notifications/slackIncomingWebhooks/common-fate-requests/webhookUrl --value https://hooks.slack.com/services/XXXX/XXXXXX --type SecureString --overwrite
+```
