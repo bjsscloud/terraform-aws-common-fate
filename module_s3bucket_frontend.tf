@@ -19,4 +19,6 @@ module "s3bucket_frontend" {
   }
 
   default_tags = local.default_tags
+
+  object_ownership = "BucketOwnerPreferred"
 }
